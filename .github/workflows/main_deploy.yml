@@ -20,25 +20,12 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    - uses: actions/checkout@v4
 
-      - name: Set Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Run install
-        uses: borales/actions-yarn@v5
-        with:
-          cmd: install # will run `yarn install` command
-
-      - name: Build production bundle
-        uses: borales/actions-yarn@v5
-        with:
-          cmd: build:prod # will run `yarn build:prod` command
-
-
-
-
-
-
-
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build --if-present
